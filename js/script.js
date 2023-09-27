@@ -46,12 +46,13 @@ function fetchWeather(city) {
                             renderTodaysWeather(city, chunk)
                         }
                         i++;
-                        renderForcast(city, chunk)
+                        renderForcast(chunk)
                     }
                 }
             })
         })
 }
+
 function renderTodaysWeather(city, chunk) {
     let date = dayjs().format('M/D/YYYY');
     let tempF = chunk.main.temp;
@@ -91,8 +92,53 @@ function renderTodaysWeather(city, chunk) {
     todayContainerEl.innerHTML = '';
     todayContainerEl.append(cardEl);
 }
-function renderForcast(city, chunk) {
-    //TBD
+function renderForcast(chunk) {
+    let tempF = chunk.main.temp;
+    console.log('tempF = ', tempF)
+    let windSpeed = chunk.wind.speed;
+    let humidity = chunk.main.humidity;
+    let icon = `https://openweathermap.org/img/w/${chunk.weather[0].icon}.png`;
+    let iconDescription = chunk.weather[0].description || weather[0].main;
+
+    let colEl = document.createElement('div');
+    let cardEl = document.createElement('div');
+    let cardBodyEl = document.createElement('div');
+    let cardTitleEl = document.createElement('h4');
+    let weatherIconEl = document.createElement('img');
+    let tempEl = document.createElement('p');
+    let windEl = document.createElement('p');
+    let humidityEl = document.createElement('p');
+
+    colEl.append(cardEl);
+    cardEl.append(cardBodyEl);
+    cardBodyEl.append(cardTitleEl, weatherIconEl, tempEl, windEl, humidityEl);
+
+    colEl.setAttribute('class', 'col-md');
+    colEl.classList.add('five-day-card');
+    cardEl.setAttribute('class', 'card bg-primary h-100 text-white');
+    cardBodyEl.setAttribute('class', 'card-body p-2');
+    cardTitleEl.setAttribute('class', 'card-title');
+    tempEl.setAttribute('class', 'card-text');
+    windEl.setAttribute('class', 'card-text');
+    humidityEl.setAttribute('class', 'card-text');
+
+    colEl.setAttribute('class', 'col-md');
+    colEl.classList.add('five-day-card');
+    cardEl.setAttribute('class', 'card bg-primary h-100 text-white');
+    cardBodyEl.setAttribute('class', 'card-body p-2');
+    cardTitleEl.setAttribute('class', 'card-title');
+    tempEl.setAttribute('class', 'card-text');
+    windEl.setAttribute('class', 'card-text');
+    humidityEl.setAttribute('class', 'card-text');
+
+    cardTitleEl.textContent = dayjs(chunk.dt_txt).format('M/D/YYYY');
+    weatherIconEl.setAttribute('src', icon);
+    weatherIconEl.setAttribute('alt', iconDescription);
+    tempEl.textContent = `Temp: ${tempF} °F`;
+    windEl.textContent = `Wind: ${windSpeed} MPH`;
+    humidityEl.textContent = `Humidity: ${humidity} %`;
+
+    forecastContainerEl.append(colEl);
 }
 
 function fetchCoords(city) {
