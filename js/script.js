@@ -66,7 +66,8 @@ function fetchWeather(city) {
                         console.log(chunk);
                         if (i == 0) {
                             renderTodaysWeather(city, chunk);
-                            appendCityToHistory(city)
+                            appendCityToHistory(city);
+                            forecastContainerEl.innerHTML = '';
                         }
                         i++;
                         renderForcast(chunk)
@@ -162,10 +163,6 @@ function renderForcast(chunk) {
     humidityEl.textContent = `Humidity: ${humidity} %`;
 
     forecastContainerEl.append(colEl);
-}
-
-function fetchCoords(city) {
-    //TBD
 }
 
 function handleSearchHistory(e) {
