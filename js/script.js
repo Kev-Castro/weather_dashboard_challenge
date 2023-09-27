@@ -8,9 +8,20 @@ var forecastContainerEl = document.querySelector('#forecast');
 var searchHistoryContainerEl = document.querySelector('#history');
 
 function renderSearchHistory() {
-    //tbd
-}
+    searchHistoryContainerEl.innerHTML = '';
 
+    for (let i = searchHistory.length - 1; i >= 0; i--) {
+        let cityBtnEl = document.createElement('button');
+        cityBtnEl.setAttribute('type', 'button');
+        cityBtnEl.setAttribute('aria-controls', 'today forecast');
+        cityBtnEl.classList.add('history-btn', 'btn-history');
+
+        // `data-search` allows access to city name when click handler is invoked
+        cityBtnEl.setAttribute('data-search', searchHistory[i]);
+        cityBtnEl.textContent = searchHistory[i];
+        searchHistoryContainerEl.append(cityBtnEl);
+    }
+}
 function init() {
     var storedHistory = localStorage.getItem('search-history');
     if (storedHistory) {
@@ -18,6 +29,17 @@ function init() {
     }
     renderSearchHistory();
 }
+
+function appendCityToHistory(city) {
+    if (searchHistory.indexOf(city) !== -1) {
+        return;
+    }
+    searchHistory.push(city);
+
+    localStorage.setItem('search-history', JSON.stringify(searchHistory));
+    renderSearchHistory();
+}
+
 function fetchWeather(city) {
 
     fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&APPID=${api_key}&units=imperial`)
@@ -43,7 +65,8 @@ function fetchWeather(city) {
                         // Do what you need with the noon forecast chunk
                         console.log(chunk);
                         if (i == 0) {
-                            renderTodaysWeather(city, chunk)
+                            renderTodaysWeather(city, chunk);
+                            appendCityToHistory(city)
                         }
                         i++;
                         renderForcast(chunk)
@@ -145,6 +168,16 @@ function fetchCoords(city) {
     //TBD
 }
 
+function handleSearchHistory(e) {
+    if (!e.target.matches('.btn-history')) {
+        return;
+    }
+
+    let btnEl = e.target;
+    city = btnEl.getAttribute('data-search');
+    fetchWeather(city);
+}
+
 function handleSearch(e) {
     // Don't continue if there is nothing in the search form
     if (!searchInputEl.value) {
@@ -157,3 +190,5 @@ function handleSearch(e) {
     searchInputEl.value = '';
 }
 searchFormEl.addEventListener('submit', handleSearch);
+searchHistoryContainerEl.addEventListener('click', handleSearchHistory);
+init();
