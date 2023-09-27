@@ -1,0 +1,15 @@
+.history-btn {
+    padding: 10px;
+    margin: 10px;
+}
+
+#search-input {
+    position: relative !important;
+    left: 10px;
+}
+
+.input-group .btn {
+    position: absolute !important;
+    left: 215px;
+    top: -1px;
+}

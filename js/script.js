@@ -15,8 +15,6 @@ function renderSearchHistory() {
         cityBtnEl.setAttribute('type', 'button');
         cityBtnEl.setAttribute('aria-controls', 'today forecast');
         cityBtnEl.classList.add('history-btn', 'btn-history');
-
-        // `data-search` allows access to city name when click handler is invoked
         cityBtnEl.setAttribute('data-search', searchHistory[i]);
         cityBtnEl.textContent = searchHistory[i];
         searchHistoryContainerEl.append(cityBtnEl);
@@ -44,25 +42,17 @@ function fetchWeather(city) {
 
     fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&APPID=${api_key}&units=imperial`)
         .then(function (res) {
-            // Send the parsed json data to the next .then() in the chain    
             return res.json();
         }).then(function (data) {
             let i = 0;
-            // Loop over forecast array 
             data.list.forEach(function (chunk) {
-                // Get the date of the current forecast 3-hour chunk
                 var forecastDate = dayjs(chunk.dt_txt);
-                // Get the current date from your computer
                 var currentDate = dayjs();
 
-                // Condition to check against if the current chunk date(day of month) is today's date - This will avoid data for today and only give us the next 5 days
                 if (forecastDate.date() !== currentDate.date()) {
-                    // Get the hour from the current forecast 3-hour chunk
                     var hour = forecastDate.hour();
 
-                    // Check if the hour is noon
                     if (hour === 12) {
-                        // Do what you need with the noon forecast chunk
                         console.log(chunk);
                         if (i == 0) {
                             renderTodaysWeather(city, chunk);
@@ -80,7 +70,6 @@ function fetchWeather(city) {
 function renderTodaysWeather(city, chunk) {
     let date = dayjs().format('M/D/YYYY');
     let tempF = chunk.main.temp;
-    console.log('tempF = ', tempF)
     let windSpeed = chunk.wind.speed;
     let humidity = chunk.main.humidity;
     let icon = `https://openweathermap.org/img/w/${chunk.weather[0].icon}.png`;
@@ -176,7 +165,6 @@ function handleSearchHistory(e) {
 }
 
 function handleSearch(e) {
-    // Don't continue if there is nothing in the search form
     if (!searchInputEl.value) {
         return;
     }
