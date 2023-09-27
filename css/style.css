@@ -3,13 +3,16 @@
     margin: 10px;
 }
 
+.input-group {
+    flex-direction: column;
+}
+
 #search-input {
     position: relative !important;
-    left: 10px;
 }
 
 .input-group .btn {
-    position: absolute !important;
-    left: 215px;
-    top: -1px;
+    position: relative !important;
+    width: 100%;
+    top: 7px;
 }
