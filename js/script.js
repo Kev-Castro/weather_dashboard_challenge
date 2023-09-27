@@ -20,7 +20,7 @@ function init() {
 }
 function fetchWeather(city) {
 
-    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&APPID=${api_key}`)
+    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&APPID=${api_key}&units=imperial`)
         .then(function (res) {
             // Send the parsed json data to the next .then() in the chain    
             return res.json();
@@ -53,7 +53,43 @@ function fetchWeather(city) {
         })
 }
 function renderTodaysWeather(city, chunk) {
-    //TBD
+    let date = dayjs().format('M/D/YYYY');
+    let tempF = chunk.main.temp;
+    console.log('tempF = ', tempF)
+    let windSpeed = chunk.wind.speed;
+    let humidity = chunk.main.humidity;
+    let icon = `https://openweathermap.org/img/w/${chunk.weather[0].icon}.png`;
+    let iconDescription = chunk.weather[0].description || weather[0].main;
+
+    let cardEl = document.createElement('div');
+    let cardBodyEl = document.createElement('div');
+    let headingEl = document.createElement('h2');
+    let weatherIconEl = document.createElement('img');
+    let tempEl = document.createElement('p');
+    let windEl = document.createElement('p');
+    let humidityEl = document.createElement('p');
+
+    cardEl.setAttribute('class', 'card');
+    cardBodyEl.setAttribute('class', 'card-body');
+    cardEl.append(cardBodyEl);
+
+    headingEl.setAttribute('class', 'h3 card-title');
+    tempEl.setAttribute('class', 'card-text');
+    windEl.setAttribute('class', 'card-text');
+    humidityEl.setAttribute('class', 'card-text');
+
+    headingEl.textContent = `${city} (${date})`;
+    weatherIconEl.setAttribute('src', icon);
+    weatherIconEl.setAttribute('alt', iconDescription);
+    weatherIconEl.setAttribute('class', 'weather-img');
+    headingEl.append(weatherIconEl);
+    tempEl.textContent = `Temp: ${tempF}°F`;
+    windEl.textContent = `Wind: ${windSpeed} MPH`;
+    humidityEl.textContent = `Humidity: ${humidity} %`;
+    cardBodyEl.append(headingEl, tempEl, windEl, humidityEl);
+
+    todayContainerEl.innerHTML = '';
+    todayContainerEl.append(cardEl);
 }
 function renderForcast(city, chunk) {
     //TBD
