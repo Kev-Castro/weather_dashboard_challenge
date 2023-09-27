@@ -42,9 +42,9 @@ There is Navigation on the Website.
 
 By clicking on the text-box, you can enter a City.
 
-- When you have entered and pressed the search button, your desired city it will display the current weather temperature, wind speed, and humidity.  
+- When you press enter or pressed the search button, your desired city it will display the current weather temperature, wind speed, and humidity.  
 
-- Also after pressing the enter button, below the current weather temperature, the page will show you the 5 day forecast after the current date. 
+- Also after pressing enter or pressing search, below the current weather temperature, the page will show you the 5 day forecast after the current date. 
 
 After seacrhing for a city, it will save your search by creating a button under the text box and search button with the city you just searched.
 
